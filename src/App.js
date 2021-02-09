@@ -1,7 +1,19 @@
-import "./App.css";
+import { Block } from "./components";
 
 function App() {
-  return <div className="App">Hello World</div>;
+  return (
+    <Block
+      cls="App"
+      bgColor="black"
+      tColor="white"
+      center
+      flex
+      flow="row-reverse"
+    >
+      <Block size={[100]}>Hello World</Block>
+      <Block bgColor="brown">Hello Second World</Block>
+    </Block>
+  );
 }
 
 export default App;
