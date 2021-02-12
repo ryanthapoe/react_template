@@ -3,15 +3,21 @@ import React from "react";
 function Block({
   cls,
   size,
-  margin = 0,
-  padding = 0,
-  bgColor,
-  tColor,
-  center,
+  margin,
+  padding,
+  background,
+  color,
+  textCenter,
+  centerAbsolute,
+  border,
+  radius,
   flex,
+  flexCenter,
+  flexGap,
   direction,
   flow,
   wrap,
+  overflow,
   children,
 }) {
   const handleMargin = () => {
@@ -122,15 +128,99 @@ function Block({
     }
   };
 
-  const componentStyle = {
-    ...handleSize(),
-    ...handleMargin(),
-    ...handlePadding(),
-    backgroundColor: bgColor,
-    color: tColor,
+  const handleCenterAbsolute = () => {
+    return {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+    };
   };
 
-  center && (componentStyle.textAlign = "center");
+  const handleBorder = () => {
+    if (typeof border === "string") {
+      return {
+        border,
+      };
+    }
+
+    if (typeof border === "object") {
+      const borderSize = Object.keys(border).length;
+      switch (borderSize) {
+        case 1:
+          return {
+            borderTop: border[0],
+            borderRight: border[0],
+            borderBottom: border[0],
+            borderLeft: border[0],
+          };
+        case 2:
+          return {
+            borderTop: border[0],
+            borderRight: border[1],
+            borderBottom: border[0],
+            borderLeft: border[1],
+          };
+        case 3:
+          return {
+            borderTop: border[0],
+            borderRight: border[1],
+            borderBottom: border[2],
+            borderLeft: border[1],
+          };
+        default:
+          return {
+            borderTop: border[0],
+            borderRight: border[1],
+            borderBottom: border[2],
+            borderLeft: border[3],
+          };
+      }
+    }
+  };
+
+  const handleRadius = () => {
+    if (radius === "circle") return { borderRadius: "50%" };
+    return { borderRadius: radius };
+  };
+
+  const handleFlexCenter = () => {
+    return {
+      justifyContent: "center",
+      alignItems: "center",
+    };
+  };
+
+  const handleFlexGap = () => {
+    if (flexGap === "between") return { justifyContent: "space-between" };
+    if (flexGap === "around") return { justifyContent: "space-around" };
+    if (flexGap === "evenly") return { justifyContent: "space-evenly" };
+  };
+
+  let componentStyle = {};
+
+  size && (componentStyle = { ...componentStyle, ...handleSize() });
+
+  margin && (componentStyle = { ...componentStyle, ...handleMargin() });
+
+  padding && (componentStyle = { ...componentStyle, ...handlePadding() });
+
+  centerAbsolute &&
+    (componentStyle = { ...componentStyle, ...handleCenterAbsolute() });
+
+  border && (componentStyle = { ...componentStyle, ...handleBorder() });
+
+  radius && (componentStyle = { ...componentStyle, ...handleRadius() });
+
+  flexCenter && (componentStyle = { ...componentStyle, ...handleFlexCenter() });
+
+  flexGap && (componentStyle = { ...componentStyle, ...handleFlexGap() });
+
+  background && (componentStyle.background = background);
+
+  color && (componentStyle.color = color);
+
+  textCenter && (componentStyle.textAlign = "center");
 
   flex && (componentStyle.display = "flex");
 
@@ -140,13 +230,13 @@ function Block({
 
   wrap && (componentStyle.flexWrap = "wrap");
 
+  overflow && (componentStyle.overflow = overflow);
+
   return (
     <div className={cls} style={componentStyle}>
       {children}
     </div>
   );
 }
-
-const style = {};
 
 export default Block;

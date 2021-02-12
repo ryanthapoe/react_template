@@ -1,17 +1,44 @@
 import { Block } from "./components";
+import style from "./style";
 
 function App() {
   return (
     <Block
       cls="App"
-      bgColor="black"
-      tColor="white"
-      center
+      background="gray"
+      color="white"
+      textCenter
+      size={[style.size.screenHeight, style.size.screenWidth]}
       flex
-      flow="row-reverse"
+      flexGap="evenly"
+      // flow="column wrap"
     >
-      <Block size={[100]}>Hello World</Block>
-      <Block bgColor="brown">Hello Second World</Block>
+      <Block
+        size={[style.size.base * 10]}
+        border={`${style.color.primary} solid 10px`}
+      >
+        Hello World
+      </Block>
+      <Block background={style.color.secondary}>Hello Second World</Block>
+      {/* <Block centerAbsolute>CENTERED TEXT</Block> */}
+      <Block
+        size={[0]}
+        border={[
+          `${style.color.success} solid ${style.size.base * 12}`,
+          `${style.color.warning} solid ${style.size.base * 12}`,
+          `${style.color.danger} solid ${style.size.base * 12}`,
+        ]}
+      ></Block>
+      <Block
+        flex
+        flexGap="around"
+        flexCenter
+        size={[100, 200]}
+        background="white"
+      >
+        <Block background="black">Item1</Block>
+        <Block background="pink">Item 2</Block>
+      </Block>
     </Block>
   );
 }
